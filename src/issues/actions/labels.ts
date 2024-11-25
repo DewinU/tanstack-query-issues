@@ -1,10 +1,13 @@
-import { githubApi } from '../../api/github.api';
+import { octokit } from '../../api/github.api';
 import { sleep } from '../../helpers';
-import { GithubLabel } from '../interfaces';
 
-export const getGithubLabels = async (): Promise<GithubLabel[]> => {
+export const getGithubLabels = async () => {
   await sleep(1500);
-  const { data } = await githubApi.get<GithubLabel[]>('/labels');
-  console.log(data);
+  // const { data } = await githubApi.get<GithubLabel[]>('/labels');
+  const { data } = await octokit.rest.issues.listLabelsForRepo({
+    owner: 'facebook',
+    repo: 'react',
+  });
+  // console.log(data);
   return data;
 };

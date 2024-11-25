@@ -1,6 +1,6 @@
-import { FiRefreshCcw } from 'react-icons/fi';
+// import { FiRefreshCcw } from 'react-icons/fi';
 import { useLabels } from '../hooks';
-import { LabelsSkeleton } from './LabelsSkeleton';
+import { LabelPickerSkeleton } from './LabelPickerSkeleton';
 
 export const LabelPicker = () => {
   const { labelsQuery } = useLabels();
@@ -10,7 +10,7 @@ export const LabelPicker = () => {
       // <div className="flex justify-center h-52">
       //   <FiRefreshCcw className="animate-spin" size={50} />
       // </div>
-      <LabelsSkeleton />
+      <LabelPickerSkeleton />
     );
   }
 
@@ -25,7 +25,7 @@ export const LabelPicker = () => {
   }
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 justify-center">
       {labelsQuery.data.map((label) => (
         <span
           key={label.id}
