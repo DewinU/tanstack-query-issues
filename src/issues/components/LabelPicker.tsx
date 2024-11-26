@@ -1,8 +1,14 @@
 // import { FiRefreshCcw } from 'react-icons/fi';
+import { FC } from 'react';
 import { useLabels } from '../hooks';
 import { LabelPickerSkeleton } from './LabelPickerSkeleton';
 
-export const LabelPicker = () => {
+interface Props {
+  selectedLabels: string[];
+  onSelectLabel: (label: string) => void;
+}
+
+export const LabelPicker: FC<Props> = ({ selectedLabels, onSelectLabel }) => {
   const { labelsQuery } = useLabels();
 
   if (labelsQuery.isLoading) {
@@ -28,8 +34,11 @@ export const LabelPicker = () => {
     <div className="flex flex-wrap gap-2 justify-center">
       {labelsQuery.data.map((label) => (
         <span
+          onClick={() => onSelectLabel(label.name)}
           key={label.id}
-          className="animate-fadeIn px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer"
+          className={`animate-fadeIn px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer ${
+            selectedLabels.includes(label.name) ? 'selected-label' : ''
+          }`}
           style={{ border: `1px solid #${label.color}` }}
         >
           {label.name}

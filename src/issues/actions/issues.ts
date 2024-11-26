@@ -1,12 +1,17 @@
 import { octokit } from '../../api/github.api';
 import { sleep } from '../../helpers';
 
-export const getGithubIssues = async () => {
+export const getGithubIssues = async (
+  state: 'all' | 'open' | 'closed',
+  labels: string[],
+) => {
   await sleep(1500);
   //   const { data } = await githubApi.get('/issues');
   const { data } = await octokit.rest.issues.listForRepo({
     owner: 'facebook',
     repo: 'react',
+    state,
+    labels: labels.join(','),
   });
   // console.log(data);
 

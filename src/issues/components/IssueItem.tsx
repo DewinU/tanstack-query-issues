@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { FiInfo, FiMessageSquare, FiCheckCircle } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getGithubIssue, getGithubIssueComments } from '../actions';
+import { timeSince } from '../../helpers';
 
 type Issue = components['schemas']['issue'];
 
@@ -57,10 +58,23 @@ export const IssueItem: FC<Props> = ({ issue }) => {
           {issue.title}
         </a>
         <span className="text-gray-500">
-          #{issue.number} opened{' '}
-          {new Date(issue.created_at).toLocaleDateString()} by
+          #{issue.number} opened {timeSince(new Date(issue.created_at))} ago by
           <span className="font-bold"> {issue.user?.login}</span>
         </span>
+
+        <div className="flex flex-wrap gap-3">
+          {issue.labels.map((label) =>
+            typeof label === 'object' ? (
+              <span
+                key={label.id}
+                className="px-2 py-1 rounded-full text-xs font-semibold"
+                style={{ border: `1px solid #${label.color}` }}
+              >
+                {label.name}
+              </span>
+            ) : null,
+          )}
+        </div>
       </div>
 
       <img
