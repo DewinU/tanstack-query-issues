@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { GitApp } from './GitApp';
-import { IssueView, ListView } from './issues/views';
+import { IssueView, ListView, ListViewInfinite } from './issues/views';
 import {
   createBrowserRouter,
   Navigate,
@@ -17,8 +17,9 @@ export const router = createBrowserRouter([
     element: <GitApp />,
     children: [
       { path: 'list', element: <ListView /> },
+      { path: 'list-infinite', element: <ListViewInfinite /> },
       { path: 'issue/:issueNumber', element: <IssueView /> },
-      { path: '*', element: <Navigate to="/issues/list" /> },
+      { path: '*', element: <Navigate to="/issues/list-infinite" /> },
     ],
   },
   {

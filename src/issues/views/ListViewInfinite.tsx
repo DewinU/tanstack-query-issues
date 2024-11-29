@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { IssueList } from '../components/IssueList';
 import { IssueListSkeleton } from '../components/IssueListSkeleton';
 import { LabelPicker } from '../components/LabelPicker';
-import { useIssues } from '../hooks';
+import { useIssuesInfinite } from '../hooks';
 
-export const ListView = () => {
+export const ListViewInfinite = () => {
   const [state, setState] = useState<'all' | 'open' | 'closed'>('all');
   const [labels, setLabels] = useState<string[]>([]);
-  const { issuesQuery, page, nextPage, prevPage } = useIssues({
+  const { issuesQuery } = useIssuesInfinite({
     state,
     labels,
   });
@@ -48,20 +48,21 @@ export const ListView = () => {
           <IssueListSkeleton />
         ) : (
           <>
-            <IssueList issues={issuesQuery.data ?? []} />
-            <div className="flex justify-between items-center">
-              <button onClick={prevPage} disabled={page === 1} className="btn">
-                Anteriores
-              </button>
-              <span>{page}</span>
-              <button
-                onClick={nextPage}
-                disabled={issuesQuery.data?.length !== 5}
-                className="btn"
-              >
-                Siguientes
-              </button>
-            </div>
+            <IssueList issues={issuesQuery.data?.pages.flat() ?? []} />
+            {issuesQuery.isFetching && <IssueListSkeleton />}
+            <button
+              onClick={() => issuesQuery.fetchNextPage()}
+              disabled={
+                !issuesQuery.hasNextPage || issuesQuery.isFetchingNextPage
+              }
+              className="btn w-full"
+            >
+              {issuesQuery.isFetchingNextPage
+                ? 'Loading more...'
+                : issuesQuery.hasNextPage
+                ? 'Load more'
+                : 'Nothing more to load'}
+            </button>
           </>
         )}
       </div>

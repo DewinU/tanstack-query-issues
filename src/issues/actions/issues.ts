@@ -4,6 +4,7 @@ import { sleep } from '../../helpers';
 export const getGithubIssues = async (
   state: 'all' | 'open' | 'closed',
   labels: string[],
+  page: number = 1,
 ) => {
   await sleep(1500);
   //   const { data } = await githubApi.get('/issues');
@@ -12,6 +13,8 @@ export const getGithubIssues = async (
     repo: 'react',
     state,
     labels: labels.join(','),
+    page,
+    per_page: 5,
   });
   // console.log(data);
 
